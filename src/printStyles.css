@@ -1,0 +1,77 @@
+/* printStyles.css - Custom print optimization style sheets for BS Express Report Center */
+
+@page {
+  size: A4 landscape;
+  margin: 10mm 12mm;
+}
+
+@media print {
+  /* Set standard layout and print color system */
+  html, body {
+    width: 297mm;
+    height: 210mm;
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    font-family: "Noto Sans Thai", "Inter", sans-serif !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide any layouts that aren't necessary */
+  .sidebar,
+  .sidebar-container,
+  .toolbar,
+  .header-bar,
+  .no-print,
+  button,
+  select,
+  input,
+  .nav-menu {
+    display: none !important;
+  }
+
+  /* Beautifully expand print view */
+  .print-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    display: block !important;
+  }
+  
+  .print-scale-fix {
+    width: 1120px !important;            /* Force absolute width */
+    max-width: 1120px !important;        /* Force absolute width */
+    min-height: 790px !important;
+    transform-origin: top left !important;
+    /* Scale down to fit physical width of A4 (297mm - 24mm margin = 273mm approx ~ 1030px printer pixels). So we scale down slightly */
+    transform: scale(0.92) !important;
+    page-break-after: always;
+    page-break-inside: avoid;
+    overflow: hidden;
+  }
+
+  /* Structural elements inside the template should not be broken */
+  .report-export-header,
+  .report-export-summary {
+    page-break-inside: avoid !important;
+  }
+
+  /* Table headers and rows */
+  thead {
+    display: table-header-group !important;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+  }
+}
+
