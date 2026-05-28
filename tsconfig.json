@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "module": "ESNext",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "firebase/firestore": [
+        "./src/lib/sqlite/firestoreCompat.ts"
+      ],
+      "firebase/app": [
+        "./src/lib/sqlite/firebaseAppCompat.ts"
+      ],
+      "firebase/auth": [
+        "./src/lib/sqlite/firebaseAuthCompat.ts"
+      ],
+      "firebase/storage": [
+        "./src/lib/sqlite/firebaseStorageCompat.ts"
+      ],
+      "firebase/functions": [
+        "./src/lib/sqlite/firebaseFunctionsCompat.ts"
+      ]
+    },
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  }
+}

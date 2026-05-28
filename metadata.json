@@ -1,0 +1,6 @@
+{
+  "name": "Commission Mapping System",
+  "description": "ระบบจัดการค่าคอมมิชชั่น รายงาน และจัดการสิทธิ์ผู้ใช้งาน (User Management) สำหรับ BS Express",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

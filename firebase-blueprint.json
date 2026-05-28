@@ -1,0 +1,201 @@
+{
+  "entities": {
+    "shipment": {
+      "title": "Shipment",
+      "description": "A parcel shipment record imported from Excel.",
+      "type": "object",
+      "properties": {
+        "trackingNo": { "type": "string" },
+        "carrier": { "type": "string" },
+        "orderNo": { "type": "string" },
+        "serviceType": { "type": "string" },
+        "orderDate": { "type": "string", "format": "date-time" },
+        "cutoffDate": { "type": "string", "format": "date-time" },
+        "branchGroup": { "type": "string" },
+        "currentLocation": { "type": "string" },
+        "type": { "type": "string" },
+        "sales": { "type": "string" },
+        "branchName": { "type": "string" },
+        "senderName": { "type": "string" },
+        "paymentCondition": { "type": "string" },
+        "paymentMethod": { "type": "string" },
+        "codAmount": { "type": "number" },
+        "codReceived": { "type": "number" },
+        "orderTotal": { "type": "number" },
+        "controlTotal": { "type": "number" },
+        "destinationTotal": { "type": "number" },
+        "netProfit": { "type": "number" },
+        "discountAmount": { "type": "number" },
+        "receiverName": { "type": "string" },
+        "senderPhone": { "type": "string" },
+        "receiverPhone": { "type": "string" },
+        "receiverAddress": { "type": "string" },
+        "province": { "type": "string" },
+        "region": { "type": "string" },
+        "weight": { "type": "number" },
+        "quantity": { "type": "number" },
+        "importedAt": { "type": "string", "format": "date-time" },
+        "commissionMappingId": { "type": "string" },
+        "commissionMatched": { "type": "boolean" },
+        "commissionProcessedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["trackingNo"]
+    },
+    "importBatch": {
+      "title": "Import Batch",
+      "description": "Log of a single Excel import operation.",
+      "type": "object",
+      "properties": {
+        "fileName": { "type": "string" },
+        "totalRows": { "type": "number" },
+        "successRows": { "type": "number" },
+        "importedBy": { "type": "string" },
+        "importedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "userProfile": {
+      "title": "User Profile",
+      "description": "Stores user accounts and permissions.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "manager", "staff", "viewer"] },
+        "status": { "type": "string", "enum": ["active", "disabled"] },
+        "permissions": { "type": "array", "items": { "type": "string" } },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "lastLoginAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "auditLog": {
+      "title": "Audit Log",
+      "description": "Tracks administrative actions.",
+      "type": "object",
+      "properties": {
+        "action": { "type": "string" },
+        "targetUserId": { "type": "string" },
+        "performedBy": { "type": "string" },
+        "performedByEmail": { "type": "string" },
+        "changes": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "dailyBranchSummary": {
+       "title": "Daily Branch Summary",
+       "type": "object",
+       "properties": {}
+    },
+    "dailyProvinceSummary": {
+       "title": "Daily Province Summary",
+       "type": "object",
+       "properties": {}
+    },
+    "systemSetting": {
+      "title": "System Setting",
+      "description": "System-wide setting documents like company metadata.",
+      "type": "object",
+      "properties": {
+        "companyNameTh": { "type": "string" },
+        "companyNameEn": { "type": "string" },
+        "addressLine1": { "type": "string" },
+        "addressLine2": { "type": "string" },
+        "addressLine3": { "type": "string" },
+        "addressLine4": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "taxId": { "type": "string" },
+        "logoUrl": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "shipments/{trackingNo}": {
+      "schema": { "$ref": "#/entities/shipment" },
+      "description": "Individual parcel shipment records."
+    },
+    "importBatches/{batchId}": {
+      "schema": { "$ref": "#/entities/importBatch" },
+      "description": "History of excel imports."
+    },
+    "users/{userId}": {
+      "schema": { "$ref": "#/entities/userProfile" },
+      "description": "User roles and profiles. Used to authorize reads/writes."
+    },
+    "auditLogs/{logId}": {
+      "schema": { "$ref": "#/entities/auditLog" },
+      "description": "Audit logs for administrative actions."
+    },
+    "systemSettings/{settingId}": {
+      "schema": { "$ref": "#/entities/systemSetting" },
+      "description": "Storage for system settings."
+    },
+    "dailyBranchSummaries/{summaryId}": {
+       "schema": { "$ref": "#/entities/dailyBranchSummary" },
+       "description": "Aggregated daily metrics by branch."
+    },
+    "dailyProvinceSummaries/{summaryId}": {
+       "schema": { "$ref": "#/entities/dailyProvinceSummary" },
+       "description": "Aggregated daily metrics by province."
+    },
+    "commissionRules/{ruleId}": {
+      "type": "collection",
+      "description": "Rules for calculating commission.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "ruleName": { "type": "string" },
+          "reportType": { "type": "string" },
+          "branchCode": { "type": "string" },
+          "branchName": { "type": "string" },
+          "customerGroup": { "type": "string" },
+          "provinceGroup": { "type": "string" },
+          "serviceType": { "type": "string" },
+          "rateType": { "type": "string", "enum": ["PERCENT", "FIXED_PER_BILL", "FIXED_PER_PARCEL", "TIER_PERCENT", "CUSTOM"] },
+          "rateValue": { "type": "number" },
+          "minAmount": { "type": "number" },
+          "maxAmount": { "type": "number" },
+          "priority": { "type": "number" },
+          "isActive": { "type": "boolean" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "updatedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "commissionMappings/{mappingId}": {
+      "type": "collection",
+      "description": "Mapping for commissions",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "branchCode": { "type": "string" },
+          "senderOrBranchName": { "type": "string" },
+          "supervisor": { "type": "string" },
+          "customerGroup": { "type": "string" },
+          "deliveryLine": { "type": "string" },
+          "team": { "type": "string" },
+          "commissionRate": { "type": "number" },
+          "area": { "type": "string" },
+          "accountingTeam": { "type": "string" },
+          "bsBookingReferral": { "type": "string" },
+          "isArchived": { "type": "boolean" },
+          "archivedAt": { "type": "string", "format": "date-time" },
+          "archivedBy": { "type": "string" }
+        }
+      }
+    },
+    "commissionMappingUsage/{mappingId}": {
+      "type": "collection",
+      "description": "Aggregation count and last used date for each commission mapping.",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "mappingId": { "type": "string" },
+          "usageCount": { "type": "number" },
+          "lastUsedAt": { "type": "string" }
+        }
+      }
+    }
+  }
+}
